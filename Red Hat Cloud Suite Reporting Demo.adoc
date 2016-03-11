@@ -1,47 +1,23 @@
-:scrollbar:
-:data-uri:
-:toc2:
-
 == Red Hat Cloud Suite Reporting Demo
 
 :numbered:
 
 == Overview
 
-This demonstration uses CloudForms 4.0 to collect Capacity and Utilization data from three RHEL OSP instances, each running three instances (Windows, RHEL and Ubuntu).  The C&U data is then used to generate utilization and chargeback reports in CloudForms. 
+This demonstration uses CloudForms 4.0 to collect Capacity and
+Utilization data from three RHEL OSP instances, each running three
+instances (Windows, RHEL and Ubuntu).  The C&U data is then used to
+generate utilization and chargeback reports in CloudForms.
 
-== Goal
-Define chargeback rates
-Create reports for utilization and chargeback
+.Goal
 
-=== Provision Your Demo Environment
+* Define chargeback rates
 
- Upload your public SSH key to https://www.opentlc.com/update, if you have not done so already.
-+
-[NOTE]
-If you need help with SSH, go to https://www.opentlc.com/ssh.html.
+* Create reports for utilization and chargeback
 
-. Log in to https://rhpds.redhat.com with your OPENTLC SSO credentials.
+.Prereqs
 
-. Go to *Services* -> *Catalogs* -> *Service Catalogs*.
-
-. Under *All Services* -> *Cloud Infrastructure Demos*, select *Red Hat cloud Suite Deployment Demo*.
-
-. On the right, click *Order*.
-
-. Read all of the information on the resulting page, check the necessary box, and click *Submit*.
-
-[IMPORTANT]
-====
-* It takes about 20 minutes for your demo to load completely and become accessible, even if some of the systems are marked "Up."
-* You will receive an email with information about how to access your demo environment.
-** The email contains a list of hostnames, IP addresses, and your GUID; make note of them.
-** Whenever you see GUID in the demo instructions, replace it with the GUID provided in the email.
-* You can get real-time updates of your demo environment at https://www.opentlc.com/rhpds-status.
-====
-
-[TIP]
-Be very mindful of the runtime of your demo environment!  It may take you several hours to complete the demo, so you may have to extend the runtime.  This is especially important in later steps when you are building virtual machines.  For information on how to extend runtime and lifetime, see https://www.opentlc.com/lifecycle.
+* None
 
 === Environment
 
@@ -50,174 +26,223 @@ The demo environment consists of the following systems:
 [cols=a1,a1,a2]
 |=======
 |Hostname |Internal IP |Description
-|`demo.cloudlab.redhat.com` |`10.0.1.10` | Jump host and iSCSI/NFS server
-|`cloudforms.cloudlab.redhat.com` |`10.0.1.20` | CloudForms Server
-|`osptokyo.cloudlab.redhat.com` |`10.2.0.10` | Tokyo OpenStack Environment
-|`ospparis.cloudlab.redhat.com` |`10.3.0.10` | Paris OpenStack Environment
-|`ospny.cloudlab.redhat.com` |`10.1.0.10` | New York OpenStack Environment
+|`demo.cloudlab.redhat.com` |`10.0.1.10` | Jump host and Cinder/NFS server
+|`cloudforms.cloudlab.redhat.com` |`10.0.1.20` | CloudForms server managing RHEL OSP Environments
+|`ospny.cloudlab.redhat.com` |`10.1.0.10` | Geographically simulated RHEL OSP environment
+|`osptokyo.cloudlab.redhat.com` |`10.2.0.10` | Geographically simulated RHEL OSP environment
+|`ospparis.cloudlab.redhat.com` |`10.3.0.10` | Geographically simulated RHEL OSP environment
 |=======
 
+== Provision Your Demo Environment
 
+1.  Log in to https://rhpds.redhat.com with your OPENTLC SSO credentials.
+2.  Go to *Services* → *Catalogs* → *Service Catalogs*.
+3.  Under *All Services* → *Cloud Infrastructure Demos*, select *Red Hat
+Cloud Suite Reporting Demo*.
+4.  On the right, click *Order*.
+5.  Read all of the information on the resulting page, check the
+necessary box, and then click *Submit*.
+
+[IMPORTANT]
+
+It takes about 20 minutes for your demo to load completely and become
+accessible, even if some of the systems are marked "Up."
+You will receive an email with information about how to access your
+demo environment.
+The email contains a list of hostnames, IP addresses, and your GUID;
+make note of them.
+Whenever you see GUID in the demo instructions, replace it with the
+GUID provided in the email.
+You can get real-time updates of your demo environment at:
+https://www.opentlc.com/rhpds-status
+
+
+[TIP]
+
+Be very mindful of the runtime of your demo environment! It may take you
+several hours to complete the demo, so you may have to extend the
+runtime. This is especially important in later steps, when you are
+building the VMs. For information on how to extend runtime and lifetime,
+see: https://www.opentlc.com/lifecycle
 
 == Getting Started
 
-. Open a web browser and navigate to the CloudForms appliance.  The external hostname and IP address can be found in e-mail notification received when the environment was ordered.
+1.  Open a web browser and navigate to the CloudForms appliance.  The
+external hostname and IP address can be found in e-mail notification
+received when the environment was ordered.
 
-* CloudForms Appliance: https://cloudforms-GUID.rhpds.opentlc.com
+* CloudForms
+Appliance: https://cloudforms-GUID.rhpds.opentlc.com
 
-. Login to the CloudForms appliance:
+1.  Login to the CloudForms appliance:
 
-----
-Username: admin
-Password: r3dh4t1!
-----
+* Username: admin
+* Password: r3dh4t1!
 
-. Instance Tagging and Enabling Capacity and Utilization
- + This is already completed.  Each instance running in each environment should already be tagged and utilization data collected.  This can be verified by navigating to Clouds, Instances.  Click on an instance and Under Smart Management, next to My Company Tags, an Environment tag will be assigned.  I.E. OpenStack New York.
+== Instance Tagging and Enabling Capacity and Utilization
+
+* This is already completed.  Each instance running in each
+environment should already be tagged and utilization data collected.
+ This can be verified by navigating to *Clouds* -> *Instances*.  Click on an
+instance and *Under Smart Management*, next to *My Company Tags*, an
+*Environment* tag will be assigned.  I.E. OpenStack New York.
  
- ==== TEST
- 
-. C&U is already enabled on the CloudForms appliance and no further configuration is needed.
-. Chargeback Rates
-. CloudForms Management Engine provides a default set of rates for calculating chargeback costs using a set formula based on hourly cost per unit and hourly usage. For example, calculating the Memory Used Cost in dollars ($) for a day can be expressed in the following ways:
-.. Memory allocation per hour (in MB) * Hourly Allocation cost per megabyte * Number of Memory Allocation metrics available for the day
-.. Sum of Memory allocation for the day (in MB) * Hourly Allocation cost per megabyte
-.. Sum of Memory allocation for the day (in MB) * Daily Allocation cost per megabyte / 24
-. In a scenario where 9.29 GB of memory is used in a day with the chargeback rate set at one dollar ($1) per megabyte per day, the Memory Used Cost would be $396.42.
+* C&U is already enabled on the CloudForms appliance and no further
+configuration is needed.
 
-----
-9.29 GB = 9514.08 MB
-9514.08 MB * $1 (per MB per day) = $9514.08
-$9514.08 / 24 = $396.42 Memory Used Cost
-----
+=== Chargeback Rates
 
-. For example:
+CloudForms Management Engine provides a default set of rates for
+calculating chargeback costs using a set formula based on hourly cost
+per unit and hourly usage. For example, calculating the Memory Used Cost
+in dollars ($) for a day can be expressed in the following ways:
 
-----
-Input Box
-Field
-Value
-Per Time
-Per Unit
-Basic Info
-Description
-CloudForms
-N/A
-N/A
-Rate Details
-CPU – Allocated CPU Count
-1
-Hourly
-CPU
+* Memory allocation per hour (in MB) * Hourly Allocation cost per
+megabyte * Number of Memory Allocation metrics available for the day
+* Sum of Memory allocation for the day (in MB) * Hourly Allocation cost
+per megabyte
+* Sum of Memory allocation for the day (in MB) * Daily Allocation cost
+per megabyte / 24
 
-CPU – Used CPU in MHz
-.02
-Hourly
-MHz
+In a scenario where 9.29 GB of memory is used in a day with the
+chargeback rate set at one dollar ($1) per megabyte per day, the Memory
+Used Cost would be $396.42.
 
-Disk I/O – Used disk I/O in KBps
-.005
-Hourly
+* 9.29 GB = 9514.08 MB
+* 9514.08 MB * $1 (per MB per day) = $9514.08
+* $9514.08 / 24 = $396.42 Memory Used Cost
 
-KBps
+Example:                                   
+[cols=a1,a1,a2]
+|=======
+|Input Box |Field |Value |Per Time |Per Unit 
+|`Basic Info` |`Description` |`CloudForms` |`N/A` |`N/A`
+|`Rate Details` |`CPU – Allocated CPU Count` |`1` |`Hourly` |`CPU`
+|`Rate Details` |`CPU – Used CPU in MHz` |`.02` |`Hourly` |`MHz`
+|`Rate Details` |`Disk I/O – Used disk I/O in KBps` |`.005` |`Hourly` |`KBps`
+|`Rate Details` |`Fixed – Compute Cost 1` |`0` |`Daily` |`N/A`
+|`Rate Details` |`Fixed – Compute Cost 2` |`0` |`Monthly` |`N/A`
+|`Rate Details` |`Memory – Allocated Memory in MB` |`1` |`Hourly` |`GB`
+|`Rate Details` |`Memory – Used Memory in MB` |`.002` |`Hourly` |`MB`
+|`Rate Details` | `Network I/O – Used Network I/O in KBps` |`.005` |`Hourly` |`KBps`
+|=======
 
+=== Creating Custom Chargeback Rates
 
-Fixed – Compute Cost 1
-0
-Daily
-N/A
+1.  Navigate to *Cloud Intelligence* -> *Chargeback*.
+2.  Click the *Rates* accordion and select either *Compute* or *Storage*.
 
-Fixed – Compute Cost 2
-0
-Monthly
-N/A
+* Use *Compute* to set chargeback rates for CPU, disk I/O, memory, and
+network I/O.
 
-Memory – Allocated Memory in MB
-1
+1.  Click *Configuration*, *Add a new Chargeback
+Rate* to create a new chargeback rate.
+2.  Enter a *Description* for the chargeback rate.
+3.  Enter a rate and time option for each item.
+4.  Click *Add*.
 
-Hourly
+=== Assigning Chargeback Rates
 
-GB
+1.  Navigate to *Cloud Intelligence* -> *Chargeback*.
+2.  Click the *Assignments* accordion and click *Compute*.
 
+* Use Compute to assign a compute chargeback rate.  
 
-Memory – Used Memory in MB
-.002
-Hourly
-MB
+1.  In the *Basic Info* area, set *Assign To* compute chargeback rates to
+*Tagged VMs and Instances* and *Tag Category* to *Environment*.
+2.  Under *Selections*, select the newly created rate for each OpenStack
+environment (New York, Paris, and Tokyo)
+3.  Click *Save*.
 
-Network I/O – Used Network I/O in KBps
-.005
-Hourly
-KBps
-----
+=== Creating Chargeback Reports
 
+1.  Navigate to *Cloud Intelligence* -> *Reports*.
+2.  Click the *Reports* accordion.
+3.  Click *Configuration*, *Add a new Report*.
+4.  On the *Columns* tab, complete the *Basic Report Info* area.
 
-. Creating Custom Chargeback Rates
-.. Navigate to Cloud Intelligence -> Chargeback.
-.. Click the Rates accordion and select either Compute or Storage.
-Use Compute to set chargeback rates for CPU, disk I/O, memory, and network I/O.  (See Example)
-.. Click  Configuration,  Add a new Chargeback Rate to create a new chargeback rate.
-.. Enter a Description for the chargeback rate.
-.. Enter a rate and time option for each item.
-.. Click Add.
-. Assigning Chargeback Rates
-.. Navigate to Cloud Intelligence -> Chargeback.
-.. Click the Assignments accordion and click Compute.
-Use Compute to assign a compute chargeback rate.  
-.. In the Basic Info area, set Assign To compute chargeback rates to Tagged VMs and Instances and Tag Category to Environment.
-.. Under Selections, select the newly created rate for each OpenStack environment (New York, Paris, and Tokyo)
-.. Click Save.
-. Creating Chargeback Reports
-.. Navigate to Cloud Intelligence -> Reports.
-.. Click the Reports accordion.
-.. Click  Configuration,  Add a new Report.
-.. On the Columns tab, complete the Basic Report Info area.
-Enter a Menu Name for the report to appear in the menu list.
-Enter a Title for the report.
-.. Add fields in the Configure Report Columns area.
-From the Base the report on table list, select Chargebacks.
-Select the fields that you want in the report from Available Fields, then click  Move selected fields down. In addition to the fields, you can also select tags that you have created and assigned.
-Change the order of the fields in the report by clicking  Move selected fields up or  Move selected fields down.
-Select the following items:
-.. CPU Total Cost
-.. CPU Total
-.. Disk I/O Used Cost
-.. Disk I/O Used
-.. Memory Total Cost
-.. Memory Total
-.. Total Cost
-.. Click the Formatting tab to set the size of paper for a PDF and column header format.
-From the PDF Output area, select the page size from the drop-down list.
-From Specify Column Headers and Formats, type the text you want displayed for each field. For each numeric field, you can also set the numeric format.
-.. Click the Filter tab to set filters for the data displayed in the report.
-From Chargeback Filters, select how you want the costs to show, the tag category, the tag, and how you want the items grouped.  Use the following values:
-.. Show Costs by:  My Company Tag
-.. Tag Category:  Environment
-.. Tag:  <each OpenStack environment>
-.. Group by:  VM/Instance
-From Chargeback Interval, select the time interval.  Change Daily Ending With to 1 week.  
-.. Click the Preview tab, then click Load to preview the report.
-.. Click Add to create the new report.
-. Create Ad-hoc Report
-.. Navigate to Cloud Intelligence -> Reports.
-.. Click a newly created report.
-.. Click  Queue.  After a few minutes the report creation will complete and result will appear under the chosen report.  
-.. Click on the newly generated report, on the right pane click the download icon and choose Download as PDF.  Save the file you your local machine for review.
-. (Extra Credit) Report Scheduling (not working currently) https://bugzilla.redhat.com/show_bug.cgi?id=1300861 
-.. Add Report to Report Menu
-.. Navigate to Cloud Intelligence -> Reports.
-.. Click the Edit Report Menus accordion.
-.. Click the EvmGroup-administrator role.
-.. On the right window pane select Trending -> Hosts.
-.. Add the newly created reports by selecting it from the Available Reports area on the right, and click  Move selected reports left.
-.. Click  Commit report management changes.
-.. Click Save.
+* Enter a Menu Name for the report to appear in the menu list.
+* Enter a Title for the report.
 
-. Schedule Report
-.. Navigate to Cloud Intelligence -> Reports.
-.. Click the Schedule accordion.
-.. Click  Configuration,  Add a new Schedule.
-.. Under Basic Information provide a Name and Description.  Leave the Active box checkmarked.
-.. Under Report Selection -> Filter, choose Trending, Hosts, and the report name added to the report menu.
-.. Under Timer, set the report to run once every week at midnight.  
-.. Click Add to complete.
+1.  Add fields in the *Configure Report Columns* area.
+
+* From the *Base the report on table list*, select *Chargebacks*.
+* Select the fields that you want in the report from *Available Fields*,
+then click *Move selected fields down*. In addition to the fields, you can also select
+tags that you have created and assigned.
+* Change the order of the fields in the report by clicking *Move selected fields
+up* or *Move selected fields down*.
+
+* Select the following items:
+
+1.  CPU Total Cost
+2.  CPU Total
+3.  Disk I/O Used Cost
+4.  Disk I/O Used
+5.  Memory Total Cost
+6.  Memory Total
+7.  Total Cost
+
+1.  Click the *Formatting* tab to set the size of paper for a PDF and
+column header format.
+
+* From the *PDF Output* area, select the page size from the drop-down
+list.
+* From *Specify Column Headers and Formats*, type the text you want
+displayed for each field. For each numeric field, you can also set the
+numeric format.
+
+1.  Click the *Filter* tab to set filters for the data displayed in the
+report.
+
+* From *Chargeback Filters*, select how you want the costs to show, the
+tag category, the tag, and how you want the items grouped.  Use the
+following values:
+
+1.  Show Costs by:  My Company Tag
+2.  Tag Category:  Environment
+3.  Tag:  <each OpenStack environment>
+4.  Group by:  VM/Instance
+
+* From *Chargeback Interval*, select the time interval.  Change to *Daily ending with <today (partial)> going back <1 week>*.  
+
+1.  Click the *Preview* tab, then click *Load* to preview the report.
+2.  Click *Add* to create the new report.
+
+=== Create Ad-hoc Report
+
+1.  Navigate to *Cloud Intelligence -> Reports*.
+2.  Click a newly created report.
+3.  Click *Queue*.  After a few minutes the report creation will complete and result will
+appear under the chosen report.  
+4.  Click on the newly generated report, on the right pane click the
+download icon and choose *Download as PDF*.  Save the file to your local
+machine for review.
+
+== [Extra Credit] Report Scheduling (not working currently)
+
+* https://bugzilla.redhat.com/show_bug.cgi?id=1300861
+
+=== Add Report to Report Menu
+
+1.  Navigate to *Cloud Intelligence* -> *Reports*.
+2.  Click the *Edit Report Menus* accordion.
+3.  Click the *EvmGroup-administrator* role.
+4.  On the right window pane select *Trending* -> *Hosts*.
+5.  Add the newly created reports by selecting it from the *Available
+Reports* area on the right, and click *Move selected
+reports left*.
+6.  Click *Commit report management changes*.
+7.  Click *Save*.
+
+=== Schedule Report
+
+1.  Navigate to *Cloud Intelligence* -> *Reports*.
+2.  Click the *Schedule* accordion.
+3.  Click *Configuration -> *Add a new Schedule*.
+4.  Under *Basic Information* provide a *Name* and *Description*.  Leave the
+*Active box* checkmarked.
+5.  Under *Report Selection* -> *Filter*, choose *Trending* -> *Hosts*, and the
+report name added to the report menu.
+6.  Under *Timer*, set the report to run once every week at midnight.  
+7.  Click *Add* to complete.

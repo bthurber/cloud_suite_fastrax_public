@@ -105,7 +105,7 @@ You must accept all of the self-signed SSL certificates.
 You can also find these URLs in the email provided when you provisioned the demo environment.
 
 * *Red Hat Enterprise Virtualization Manager:* https://rhevm-GUID.rhpds.opentlc.com
-.. Navigate to and click *Administration Portal*.
+.. Navigate to and click *Administration Portal* and login with: *admin*|*r3dh4t1!*|*internal*.
 
 * *vCenter:* https://vcenter-GUID.rhpds.opentlc.com
 
@@ -201,11 +201,11 @@ Continue to ignore errors about `wp2-rhcs-cloudlab-redhat-com`.
 
 . Go to *Infrastructure* -> *Providers* -> *Virtual Machines* -> *VMs* -> *All VMs*.
 
-. Navigate to the `wp1` VM.
+. Navigate to the `mysql` VM.
 
 . Under *Custom Attributes*, confirm that there is a custom attribute called `ip` with the value you provided in `attributes.csv`.
 
-. Under *Smart Management*, confirm that *migrate_group* is set to *demo2* and *Point of Arrival* is set to *Rhev*.
+. Under *Smart Management*, confirm that *migrate_group* is set to *demo1* and *Point of Arrival* is set to *Rhev*.
 
 === Start VM Migration
 
