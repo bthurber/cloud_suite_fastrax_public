@@ -1,0 +1,165 @@
+== Red Hat Cloud Suite Modernize Develops and Operations
+
+:numbered:
+
+== Overview
+
+This demonstration
+
+.Goal
+
+* Demonstrate running and discovering (CloudForms) a micro-services based application (OpenShift) utilizing persistent storage (OpenStack Cinder).
+** The web tier is built with JBoss EAP and JBoss BRMS, running on OpenShift.
+** The database tier is built with Postgresql, running on OpenShift backed by a cinder persistent volume from OpenStack.
+** CloudForms provides visibility into the container and underlying infrastructure.
+
+.Prereqs
+
+* Users should have a basic understanding of OpenShift, OpenStack, CloudForms,  JBoss EAP, and JBoss BRMS.
+
+=== Environment
+
+The demo environment consists of the following systems:
+
+[cols=a1,a1,a2]
+|=======
+|Hostname |Internal IP |Description
+|`workstation.example.com` |`192.168.0.5` |  Bastion Host
+|`comp00.example.com` |`192.168.0.30` | OpenStack Compute Node #1
+|`comp01.example.com` |`192.168.0.31` | OpenStack Compute Node #2
+|`cf.example.com` |`192.168.0.100` | CloudForms Appliance
+|`ctrl.example.com` |`192.168.0.20` | OpenStack Controller
+|=======
+
+== Provision Your Demo Environment
+
+1.  Log in to https://rhpds.redhat.com with your OPENTLC SSO credentials.
+2.  Go to *Services* → *Catalogs* → *Service Catalogs*.
+3.  Under *All Services* → *Red Hat Cloud Suite Demos*, select *Modernize Development and Operations Demo*.
+4.  On the right, click *Order*.
+5.  Read all of the information on the resulting page, check the
+necessary box, and then click *Submit*.
+
+[IMPORTANT]
+
+It takes about 30 minutes for your demo to load completely and become
+accessible, even if some of the systems are marked "Up."
+You will receive an email with information about how to access your
+demo environment.
+The email contains a list of hostnames, IP addresses, and your GUID;
+make note of them.
+Whenever you see GUID in the demo instructions, replace it with the
+GUID provided in the email.
+You can get real-time updates of your demo environment at:
+https://www.opentlc.com/rhpds-status
+
+
+[TIP]
+
+Be very mindful of the runtime of your demo environment! It may take you
+several hours to complete the demo, so you may have to extend the
+runtime. This is especially important in later steps, when you are
+building the VMs. For information on how to extend runtime and lifetime,
+see: https://www.opentlc.com/lifecycle
+
+== Getting Started
+
+.  Step 1
+
+* Header 2
+
+Appliance: https://cloudforms-GUID.rhpds.opentlc.com
+
+.  Login to the CloudForms appliance:
+
+* Username: admin
+* Password: r3dh4t1!
+
+== Review the Environment
+
+Red Hat Cloud Suite enables end users to create micro-services based applications
+
+=== Microservices Based Application
+
+* 
+
+*
+
+=== Persistent Storage with OpenStack Cinder
+
+This we add
+
+== Updates
+
+By utilizing BRMS it's possible to enable business users to make changes to frequently changing business requirements without needing application developers.
+
+Furthermore, by utilizing OpenShift it's possible to streamline the deployment of new code changes through a Continuous Integration (CI) pipeline.
+
+=== Updating Business Rules
+
+Introduction:
+
+The web application (shopping cart) is built during demo installation with a provided coolstore project jar version 2.0.0.
+When you open the project you will find the version is also set to 2.0.0. You can run the web application as is, but if you build
+and deploy a new version of 2.0.0 to your maven repository it will find duplicate rules. To demo you deploy a new version of the
+coolstore project by bumping the version number on each build and deploy, noting the KieScanner picking up the new version within 10
+seconds of a new deployment. For example, initially start project, bump the version to 3.0.0, build and deploy, open web application
+and watch KieScanner in server logs pick up the 3.0.0 version. 
+
+. Open JBoss Cool Store web shopping experience at:
+
+* http://[insert-url]/brms-coolstore-demo
+
+. Add item to shopping cart that costs less than $25, note the shipping price is $2.99
+
+. We will now update the shipping rules in JBoss BRMS and see them used in the web application when shopping witout a new deployment
+of our application.
+
+. Login to the JBoss BRMS Business Central Web Console:
+
+* http://[insert-url]/business-central 
+
+* user: erics
+
+* password: jbossbrms1!
+
+. Open the rules project through menu selections:
+
+* AUTHORING -> PROJECT AUTHORING
+
+. Select GUIDED DECISION TABLES -> SHIPPING RULES (if not already open)
+
+* Select field with 2.99 in column Shipping Total to update to a new value of: 12.99
+
+* Click on SAVE and add comment to Save this item before clicking on SAVE button.
+
+. Now we will build and deploy our new shipping rules:
+
+* Click on OPEN PROJECT EDITOR button to update VERSION field to a new incremental value, such as from 2.0.0 -> 3.0.0.
+
+* Click on SAVE and add commnent to Save this item before clicking on SAVE button, note successful save with green pop-up notification.
+
+* Click on BUILD drop down menu in upper right corner, selecting BUILD & DEPLOY, note successful build and deploy with green pop-up notification.
+
+* The web application scans every 10 seconds for new rule deployments, so now clear the shopping cart of all values add a new item
+  that costs less than $25 and you should see the shipping price is now $12.99.
+
+You have successfully updated the JBoss BRMS rules, deployed them and the web application was able to pick up the changes without a
+single line of code being changed.
+
+
+=== Updating the Application
+
+This we will added later since we don't have a way to update the application code itself that I know of.
+
+== Visibility of Environment
+
+CloudForms provides the first glimpses of what unified management of containers, virtual machines, and physical infrastructure will look like.
+
+=== Container provider
+
+Show off the container provider.
+
+=== Relating Containers and Infrastructure
+
+Show how you can move between container, node, VM, and host.
