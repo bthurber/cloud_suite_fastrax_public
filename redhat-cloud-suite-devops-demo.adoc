@@ -137,7 +137,7 @@ This can be illustrated to viewers of the demonstration from the terminal sessio
 
 == Updates
 
-By utilizing OpenShift it's possible to streamline the deployment of new code changes through a Continuous Deployment (CD) pipeline.  For example, if a change is  made in the product description or if new products are added, this code change can easily be committed and then updated via OpenShift CI, continuous build capabilities.
+By utilizing OpenShift it's possible to streamline the deployment of new code changes through a Continuous Deployment (CD) pipeline.  For example, if a change is  made in the product description or if new products are added, this code change can easily be committed and then updated via OpenShift, continuous build and deployment capabilities.
 
 === Updating the Application
 
