@@ -65,30 +65,47 @@ see: https://www.opentlc.com/lifecycle
 
 == Getting Started
 
-OpenStack Horizon: `https://osp-<GUID>.rhpds.opentlc.com/dashboard` 
+OpenStack Horizon: `https://ctrl-<GUID>.rhpds.opentlc.com/dashboard`
 
-.  Login into the OpenStack dahsboard and start both OpenShift instances:
+.  Log into the OpenStack dahsboard and start both OpenShift instances:
 
 * Username: admin
 * Password: r3dh4t1!
 * Click on Project and Instances
-* Next to each instance click "Start Instance"
-* Click on Volumes and review the Cinder volume used for persistent storage <datagrid>
+* For each instance click "Edit Instance", and "Hard Reboot Instance".
+* Once running, click on openshift-master.example.com to view it's details.
+* Confirm the Cinder volume used for persistent storage is "datagrid" on /dev/vdc
 
-CloudForms Appliance: `https://cloudforms-<GUID>.rhpds.opentlc.com`
+CloudForms Appliance: `https://cf-<GUID>.rhpds.opentlc.com`
 
 .  Login to the CloudForms appliance:
 
 * Username: admin
 * Password: r3dh4t1!
 
+Use SSH to access your demo server with your OPENTLC login name and private SSH key.
+
+* Example using a Unix/Linux system:
++
+----
+$ ssh -i /path/to/private_key <YOUR-OPENTLC-USERNAME>@demo-<YOUR-GUID>.rhpds.opentlc.com
+----
+
+. Become `root` using your OPENTLC password:
++
+----
+$ sudo -i
+----
+
+This terminal will be used later in the demonstration
+
 == Review the Environment
 
 Red Hat Cloud Suite enables end users to create, deploy and update micro-services based applications.
 
-OpenShift Enterprise Console:  `https://<IP_ADDRESS_OF_WORKSTATION>:8443/console`
+OpenShift Enterprise Console:  `https://workstation-<GUID>.rhpds.opentlc.com:8443/console`
 
-.  Once the OpenShift environment is up and running login to the OSE console:
+.  Once the OpenShift environment is up and running (this may take several minutes) login to the OSE console:
 
 * Username: admin
 * Password: r3dh4t1!
@@ -98,6 +115,7 @@ OpenShift Enterprise Console:  `https://<IP_ADDRESS_OF_WORKSTATION>:8443/console
 === JBoss EAP Microservices Based Application
 
 Consists of JBoss EAP 6 running a series of microservices to include (based on the following `https://access.redhat.com/articles/2094731` ):
+
 * MySQL product database
 * MySQL sales database w/persistent storage
 * Product service
@@ -107,9 +125,13 @@ Consists of JBoss EAP 6 running a series of microservices to include (based on t
 
 === Persistent Storage with OpenStack Cinder
 
-The envrionment is configured with persistent storage that maps a Cinder volume in OpenStack to a persistent volume in OpenShift.  A persistent claim is then mapped to the volume and provides storage to the sales-db pod.
+The environment is configured with persistent storage that maps a Cinder volume in OpenStack to a persistent volume in OpenShift.  A persistent claim is then mapped to the volume and provides storage to the sales-db pod.
+This can be illustrated to viewers of the demonstration from the terminal session that was established to workstation-<GUID>.rhpds.opentlc.com in the getting started section.
 
-.  On the OpenShift all-in-one instance (openshift-master.example.com) review the persistent volume and claim
+.  On the OpenShift all-in-one instance (openshift-master.example.com) review the persistent volume and claim. From the workstation-<GUID> system ssh to the openshift master perform the following steps.
+* ssh -i openshift.pem cloud-user@192.168.1.250
+* sudo -i
+* oc login (username: admin password: r3dh4t1!)
 * From the cli: oc get pv and oc get pvc
 * From the console under the Jboss project, navigate to Browse, Pods.  Locate and click on the sales-db pod.  Review the volumes attached.
 
@@ -251,7 +273,7 @@ presentation-5
 
 [root@openshift-all-in-one ~]# oc get builds -w
 NAME             TYPE      FROM      STATUS    STARTED                  DURATION
-presentation-5   Source    Git       Running   Less than a second ago   
+presentation-5   Source    Git       Running   Less than a second ago
 presentation-5   Source    Git@4e02049   Running   15 seconds ago   15s
 presentation-5   Source    Git@4e02049   Complete   5 minutes ago   5m3s
 
@@ -285,7 +307,7 @@ The advantage of running OpenShift is the ability support continuous integration
  * For products listed, under the price displays "Avaiability"
  * In your forked git repo for the demo, navigate to Presentation > src/main > webapp and edit products.jsp
  * Change "Available" to "In Stock" and commit the change
- 
+
  . Rebuild and redeploy the presentation pod from the OpenShift console
  * Login to the OpenShift console: `https://<IP_ADDRESS_OF_WORKSTATION:8443/console`
  * Select the JBoss project
@@ -326,7 +348,7 @@ CloudForms provides the first glimpses of what unified management of containers,
 
 === Container provider
 
- . Access the CloudForms appliance 
+ . Access the CloudForms appliance
  * Open a browser and navigate to the CloudForms appliance.  The URL will be located in the e-mail received after ordering the catalog item in the RHPDS system `https://<CFME_EXTERNAL_HOSTNAME>` admin/r3dh4t1!
  * Navigate to Containers > Providers and click the OSE provider listed
  * Click Configuratio > Refresh items and relationships
@@ -346,7 +368,7 @@ After a few minutes the Container Provider will refresh the environment info
  * Click Image Registries.  This is the local docker registry running on OpenShift and is where the JBoss EAP images reside
  * Click Container Images.  This is a list of all container images located in the registry
  * Click Topology.  This is a graphical representation of the environment.  You can hover over items for a brief description
- 
+
 == Extra credit
 
 The JBoss EPA application provides order functionality in the web UI for products listed.  Create a test user and purchase several products.
@@ -355,7 +377,7 @@ The JBoss EPA application provides order functionality in the web UI for product
   * Navigate to the EAP web UI: `http://<IP_ADDRESS_OF_WORKSTATION>`
   * In the upper right click "Register"
   * Fill in the Customer Registration form and click "Register"
-  
+
   . Purchase products
   * As the test user select several products from the web UI to purchase
   * Once you have selected the desired items click the cart/checkout icon in the upper right
