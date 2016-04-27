@@ -153,19 +153,20 @@ If you have not done so already: from the Git web interface, click *Fork* in the
  upper right corner of the GitHub web UI to fork the Git repository
   `https://github.com/RHsyseng/OpenShift3-MSA` into your own account.
 
+  Edit the file 'https://github.com/GitHubUsername/OpenShift3-MSA/blob/master/Presentation/src/main/webapp/products.jsp' where GitHubUsername is your github username.
+  Make a change to the file such as changing the word "Availability" on line 28 to "In-Stock". You can do this inline on github or using your favorite editor and then merging.
+
 === Change and Build
 
 . Log into the ose-master node.
 * ssh -i .ssh/id_rsa <RHPDS_username>@workstation-<GUID>.rhpds.opentlc.com
-* su - <r3dh4t1!>
-* ssh ctrl
+* sudo su - (password: r3dh4t1!)
 * ssh -i openshift.pem cloud-user@192.168.1.250
-* su - <r3dh4t1!>
+* sudo su - (password: r3dh4t1!)
 
 . Login to OpenShift and change to the JBoss project.
-* oc login
-* admin
-* r3dh4t1!
+* oc login (username: admin password: r3dh4t1!)
+
 ----
 oc project jboss
 ----
