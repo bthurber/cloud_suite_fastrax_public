@@ -147,7 +147,7 @@ In this section, you modify products.jsp for the web application and then rebuil
 
 The next sections require a GitHub account.
 
-=== Fork Repository
+=== Fork Repository and Edit the Code
 
 If you have not done so already: from the Git web interface, click *Fork* in the
  upper right corner of the GitHub web UI to fork the Git repository
@@ -156,7 +156,7 @@ If you have not done so already: from the Git web interface, click *Fork* in the
   Edit the file 'https://github.com/GitHubUsername/OpenShift3-MSA/blob/master/Presentation/src/main/webapp/products.jsp' where GitHubUsername is your github username.
   Make a change to the file such as changing the word "Availability" on line 28 to "In-Stock". You can do this inline on github or using your favorite editor and then merging.
 
-=== Change and Build
+=== Change Build location and Build
 
 . Log into the ose-master node.
 * ssh -i .ssh/id_rsa <RHPDS_username>@workstation-<GUID>.rhpds.opentlc.com
@@ -298,50 +298,12 @@ Copying all jar artifacts from /home/jboss/source/deployments directory into /op
 .......
 Cropped Output
 .......
-----
 
-=== Application Update
-The advantage of running OpenShift is the ability support continuous integration.  Build and deploy often and early.  For this demo we will change the deployed products pod to reflect a change in the web UI.
 
- . Access the web UI for the JBoss EAP deployment
- * `http://<IP_ADDRESS_OF_WORKSTATION>`
- * For products listed, under the price displays "Avaiability"
- * In your forked git repo for the demo, navigate to Presentation > src/main > webapp and edit products.jsp
- * Change "Available" to "In Stock" and commit the change
-
- . Rebuild and redeploy the presentation pod from the OpenShift console
- * Login to the OpenShift console: `https://<IP_ADDRESS_OF_WORKSTATION:8443/console`
- * Select the JBoss project
- * Navigate to Browse > Builds
- * Select the presentation build and click "Start Build"
- * Progress of the build can be monitored from the cli on the OpenShift Master
-
-----
-[root@openshift-all-in-one ~]# oc logs -f bc/presentation
-[INFO] Building war: /home/jboss/source/deployments/ROOT.war
-[INFO] ------------------------------------------------------------------------
-[INFO] BUILD SUCCESS
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time: 2:59.491s
-[INFO] Finished at: Fri Apr 22 11:49:22 EDT 2016
-[INFO] Final Memory: 30M/834M
-[INFO] ------------------------------------------------------------------------
-Copying all war artifacts from /home/jboss/source/target directory into /opt/eap/standalone/deployments for later deployment...
-Copying all ear artifacts from /home/jboss/source/target directory into /opt/eap/standalone/deployments for later deployment...
-Copying all rar artifacts from /home/jboss/source/target directory into /opt/eap/standalone/deployments for later deployment...
-Copying all jar artifacts from /home/jboss/source/target directory into /opt/eap/standalone/deployments for later deployment...
-Copying all war artifacts from /home/jboss/source/deployments directory into /opt/eap/standalone/deployments for later deployment...
-'/home/jboss/source/deployments/ROOT.war' -> '/opt/eap/standalone/deployments/ROOT.war'
-Copying all ear artifacts from /home/jboss/source/deployments directory into /opt/eap/standalone/deployments for later deployment...
-Copying all rar artifacts from /home/jboss/source/deployments directory into /opt/eap/standalone/deployments for later deployment...
-Copying all jar artifacts from /home/jboss/source/deployments directory into /opt/eap/standalone/deployments for later deployment...
-.......
-Cropped Output
-.......
 ----
 
  . Verify changes
- * Refresh the web UI at `http://<IP_ADDRESS_OF_WORKSTATION>` and verify "Available" has been changed to "In Stock"
+ * Refresh the web UI at `http://workstation-<GUID>.rhpds.opentlc.com/` and verify "Available" has been changed to "In Stock"
 
 == Visibility of Environment
 
@@ -352,7 +314,7 @@ CloudForms provides the first glimpses of what unified management of containers,
  . Access the CloudForms appliance
  * Open a browser and navigate to the CloudForms appliance.  The URL will be located in the e-mail received after ordering the catalog item in the RHPDS system `https://<CFME_EXTERNAL_HOSTNAME>` admin/r3dh4t1!
  * Navigate to Containers > Providers and click the OSE provider listed
- * Click Configuratio > Refresh items and relationships
+ * Click Configuration > Refresh items and relationships
 
 After a few minutes the Container Provider will refresh the environment info
 
@@ -364,7 +326,7 @@ After a few minutes the Container Provider will refresh the environment info
  * Click Container Services.  Select a service on the list and note the Pods and Nodes related under Relationships
  * Click Replicators.  This tab represents replicas associated to the pods.  If a pod fails OpenShift will automatically redeploy
  * Click Pods.  This is a list of pods and status of each for the environment
- * Click Containers.  Notice the sti-build items and assocaited pods.  This provides the source to image CI capabilities demonstrated previously
+ * Click Containers.  Notice the sti-build items and associated pods.  This provides the source to image CI capabilities demonstrated previously
  * Click Container Nodes.  This displays the OpenShift nodes in the environment.
  * Click Image Registries.  This is the local docker registry running on OpenShift and is where the JBoss EAP images reside
  * Click Container Images.  This is a list of all container images located in the registry
@@ -375,7 +337,7 @@ After a few minutes the Container Provider will refresh the environment info
 The JBoss EPA application provides order functionality in the web UI for products listed.  Create a test user and purchase several products.
 
   . Create a test user
-  * Navigate to the EAP web UI: `http://<IP_ADDRESS_OF_WORKSTATION>`
+  * Navigate to the EAP web UI: `http://workstation-<GUID>.rhpds.opentlc.com/`
   * In the upper right click "Register"
   * Fill in the Customer Registration form and click "Register"
 
