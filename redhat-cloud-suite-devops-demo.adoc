@@ -4,14 +4,17 @@
 
 == Overview
 
-This demonstration
+This demonstration covers running and discovering (CloudForms) a micro-services based application (JBoss EAP on OpenShift) utilizing persistent storage (OpenStack Cinder) using S2I services (OpenShift) to show Continuous Integration capabilities.
 
 .Goal
 
-* Demonstrate running and discovering (CloudForms) a micro-services based application (OpenShift) utilizing persistent storage (OpenStack Cinder).
+* Review the currently deployed JBoss EAP application running on OpenShift
 ** The web tier is built with JBoss EAP running on OpenShift.
-** The sales database is built with MySQL, backed by a cinder persistent volume from OpenStack.
-** CloudForms provides visibility into the container and underlying infrastructure.
+* Review the persistent storage mapping from OpenStack to OpenShift with a persistent volume claim configured for the sales-db pod
+** The sales database is built with a MySQL persistent pod, backed by a Cinder persistent volume from OpenStack which allows for sales transaction persistence if the pod is re-built
+* Update the JBoss EAP web application code and use OpenShift S2I capabilities to re-build and re-deploy the image demonstrating Continuous Integration capabilities
+* Use CloudForms to review the discovered container provider and details of running services
+** CloudForms provides visibility into the running container environment and underlying infrastructure
 
 .Prereqs
 
@@ -34,9 +37,9 @@ The demo environment consists of the following systems:
 
 == Provision Your Demo Environment
 
-1.  Log in to https://rhpds.redhat.com with your OPENTLC SSO credentials.
-2.  Go to *Services* → *Catalogs* → *Service Catalogs*.
-3.  Under *All Services* → *Red Hat Cloud Suite Demos*, select *Modernize Development and Operations Demo*.
+1.  Log in to https://rhpds.redhat.com with your OPENTLC SSO credentials.
+2.  Go to *Services* → *Catalogs* → *Service Catalogs*.
+3.  Under *All Services* → *Red Hat Cloud Suite Demos*, select *Modernize Development and Operations Demo*.
 4.  On the right, click *Order*.
 5.  Read all of the information on the resulting page, check the
 necessary box, and then click *Submit*.
@@ -65,47 +68,30 @@ see: https://www.opentlc.com/lifecycle
 
 == Getting Started
 
-OpenStack Horizon: `https://ctrl-<GUID>.rhpds.opentlc.com/dashboard`
+OpenStack Horizon: `https://osp-<GUID>.rhpds.opentlc.com/dashboard` 
 
-.  Log into the OpenStack dahsboard and start both OpenShift instances:
+.  Login into the OpenStack dahsboard and start both OpenShift instances:
 
 * Username: admin
 * Password: r3dh4t1!
 * Click on Project and Instances
-* For each instance click "Edit Instance", and "Hard Reboot Instance".
-* Once running, click on openshift-master.example.com to view it's details.
-* Confirm the Cinder volume used for persistent storage is "datagrid" on /dev/vdc
+* Next to each instance click "Start Instance"
+* Click on Volumes and review the Cinder volume used for persistent storage <datagrid>
 
-CloudForms Appliance: `https://cf-<GUID>.rhpds.opentlc.com`
+CloudForms Appliance: `https://cloudforms-<GUID>.rhpds.opentlc.com`
 
 .  Login to the CloudForms appliance:
 
 * Username: admin
 * Password: r3dh4t1!
 
-Use SSH to access your demo server with your OPENTLC login name and private SSH key.
-
-* Example using a Unix/Linux system:
-+
-----
-$ ssh -i /path/to/private_key <YOUR-OPENTLC-USERNAME>@demo-<YOUR-GUID>.rhpds.opentlc.com
-----
-
-. Become `root` using your OPENTLC password:
-+
-----
-$ sudo -i
-----
-
-This terminal will be used later in the demonstration
-
 == Review the Environment
 
 Red Hat Cloud Suite enables end users to create, deploy and update micro-services based applications.
 
-OpenShift Enterprise Console:  `https://workstation-<GUID>.rhpds.opentlc.com:8443/console`
+OpenShift Enterprise Console:  `https://<IP_ADDRESS_OF_WORKSTATION>:8443/console`
 
-.  Once the OpenShift environment is up and running (this may take several minutes) login to the OSE console:
+.  Once the OpenShift environment is up and running login to the OSE console:
 
 * Username: admin
 * Password: r3dh4t1!
@@ -115,7 +101,6 @@ OpenShift Enterprise Console:  `https://workstation-<GUID>.rhpds.opentlc.com:844
 === JBoss EAP Microservices Based Application
 
 Consists of JBoss EAP 6 running a series of microservices to include (based on the following `https://access.redhat.com/articles/2094731` ):
-
 * MySQL product database
 * MySQL sales database w/persistent storage
 * Product service
@@ -125,19 +110,18 @@ Consists of JBoss EAP 6 running a series of microservices to include (based on t
 
 === Persistent Storage with OpenStack Cinder
 
-The environment is configured with persistent storage that maps a Cinder volume in OpenStack to a persistent volume in OpenShift.  A persistent claim is then mapped to the volume and provides storage to the sales-db pod.
-This can be illustrated to viewers of the demonstration from the terminal session that was established to workstation-<GUID>.rhpds.opentlc.com in the getting started section.
+The envrionment is configured with persistent storage that maps a Cinder volume in OpenStack to a persistent volume in OpenShift.  A persistent claim is then mapped to the volume and provides storage to the sales-db pod.
 
-.  On the OpenShift all-in-one instance (openshift-master.example.com) review the persistent volume and claim. From the workstation-<GUID> system ssh to the openshift master perform the following steps.
-* ssh -i openshift.pem cloud-user@192.168.1.250
-* sudo -i
-* oc login (username: admin password: r3dh4t1!)
-* From the cli: oc get pv and oc get pvc
+.  On the OpenShift all-in-one instance (openshift-master.example.com) review the persistent volume and claim
+* From the cli: 
+----
+oc get pv and oc get pvc
+----
 * From the console under the Jboss project, navigate to Browse, Pods.  Locate and click on the sales-db pod.  Review the volumes attached.
 
 == Updates
 
-By utilizing OpenShift it's possible to streamline the deployment of new code changes through a Continuous Deployment (CD) pipeline.  For example, if a change is  made in the product description or if new products are added, this code change can easily be committed and then updated via OpenShift, continuous build and deployment capabilities.
+By utilizing OpenShift it's possible to streamline the deployment of new code changes through a Continuous Integration (CI) pipeline.  For example, if a change is made in the product description or if new products are added, this code change can easily be committed and then updated via OpenShift S2I build capabilities.
 
 === Updating the Application
 
@@ -147,26 +131,25 @@ In this section, you modify products.jsp for the web application and then rebuil
 
 The next sections require a GitHub account.
 
-=== Fork Repository and Edit the Code
+=== Fork Repository
 
 If you have not done so already: from the Git web interface, click *Fork* in the
  upper right corner of the GitHub web UI to fork the Git repository
   `https://github.com/RHsyseng/OpenShift3-MSA` into your own account.
 
-  Edit the file 'https://github.com/GitHubUsername/OpenShift3-MSA/blob/master/Presentation/src/main/webapp/products.jsp' where GitHubUsername is your github username.
-  Make a change to the file such as changing the word "Availability" on line 28 to "In-Stock". You can do this inline on github or using your favorite editor and then merging.
-
-=== Change Build location and Build
+=== Change and Build
 
 . Log into the ose-master node.
 * ssh -i .ssh/id_rsa <RHPDS_username>@workstation-<GUID>.rhpds.opentlc.com
-* sudo su - (password: r3dh4t1!)
+* su - <r3dh4t1!>
+* ssh ctrl
 * ssh -i openshift.pem cloud-user@192.168.1.250
-* sudo su - (password: r3dh4t1!)
+* su - <r3dh4t1!>
 
 . Login to OpenShift and change to the JBoss project.
-* oc login (username: admin password: r3dh4t1!)
-
+* oc login
+* admin
+* r3dh4t1!
 ----
 oc project jboss
 ----
@@ -274,7 +257,7 @@ presentation-5
 
 [root@openshift-all-in-one ~]# oc get builds -w
 NAME             TYPE      FROM      STATUS    STARTED                  DURATION
-presentation-5   Source    Git       Running   Less than a second ago
+presentation-5   Source    Git       Running   Less than a second ago   
 presentation-5   Source    Git@4e02049   Running   15 seconds ago   15s
 presentation-5   Source    Git@4e02049   Complete   5 minutes ago   5m3s
 
@@ -298,12 +281,50 @@ Copying all jar artifacts from /home/jboss/source/deployments directory into /op
 .......
 Cropped Output
 .......
+----
 
+=== Application Update
+The advantage of running OpenShift is the ability support continuous integration.  Build and deploy often and early.  For this demo we will change the deployed products pod to reflect a change in the web UI.
 
+ . Access the web UI for the JBoss EAP deployment
+ * `http://<IP_ADDRESS_OF_WORKSTATION>`
+ * For products listed, under the price displays "Avaiability"
+ * In your forked git repo for the demo, navigate to Presentation > src/main > webapp and edit products.jsp
+ * Change "Available" to "In Stock" and commit the change
+ 
+ . Rebuild and redeploy the presentation pod from the OpenShift console
+ * Login to the OpenShift console: `https://<IP_ADDRESS_OF_WORKSTATION:8443/console`
+ * Select the JBoss project
+ * Navigate to Browse > Builds
+ * Select the presentation build and click "Start Build"
+ * Progress of the build can be monitored from the cli on the OpenShift Master
+
+----
+[root@openshift-all-in-one ~]# oc logs -f bc/presentation
+[INFO] Building war: /home/jboss/source/deployments/ROOT.war
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 2:59.491s
+[INFO] Finished at: Fri Apr 22 11:49:22 EDT 2016
+[INFO] Final Memory: 30M/834M
+[INFO] ------------------------------------------------------------------------
+Copying all war artifacts from /home/jboss/source/target directory into /opt/eap/standalone/deployments for later deployment...
+Copying all ear artifacts from /home/jboss/source/target directory into /opt/eap/standalone/deployments for later deployment...
+Copying all rar artifacts from /home/jboss/source/target directory into /opt/eap/standalone/deployments for later deployment...
+Copying all jar artifacts from /home/jboss/source/target directory into /opt/eap/standalone/deployments for later deployment...
+Copying all war artifacts from /home/jboss/source/deployments directory into /opt/eap/standalone/deployments for later deployment...
+'/home/jboss/source/deployments/ROOT.war' -> '/opt/eap/standalone/deployments/ROOT.war'
+Copying all ear artifacts from /home/jboss/source/deployments directory into /opt/eap/standalone/deployments for later deployment...
+Copying all rar artifacts from /home/jboss/source/deployments directory into /opt/eap/standalone/deployments for later deployment...
+Copying all jar artifacts from /home/jboss/source/deployments directory into /opt/eap/standalone/deployments for later deployment...
+.......
+Cropped Output
+.......
 ----
 
  . Verify changes
- * Refresh the web UI at `http://workstation-<GUID>.rhpds.opentlc.com/` and verify "Available" has been changed to "In Stock"
+ * Refresh the web UI at `http://<IP_ADDRESS_OF_WORKSTATION>` and verify "Available" has been changed to "In Stock"
 
 == Visibility of Environment
 
@@ -311,10 +332,10 @@ CloudForms provides the first glimpses of what unified management of containers,
 
 === Container provider
 
- . Access the CloudForms appliance
+ . Access the CloudForms appliance 
  * Open a browser and navigate to the CloudForms appliance.  The URL will be located in the e-mail received after ordering the catalog item in the RHPDS system `https://<CFME_EXTERNAL_HOSTNAME>` admin/r3dh4t1!
  * Navigate to Containers > Providers and click the OSE provider listed
- * Click Configuration > Refresh items and relationships
+ * Click Configuratio > Refresh items and relationships
 
 After a few minutes the Container Provider will refresh the environment info
 
@@ -326,21 +347,21 @@ After a few minutes the Container Provider will refresh the environment info
  * Click Container Services.  Select a service on the list and note the Pods and Nodes related under Relationships
  * Click Replicators.  This tab represents replicas associated to the pods.  If a pod fails OpenShift will automatically redeploy
  * Click Pods.  This is a list of pods and status of each for the environment
- * Click Containers.  Notice the sti-build items and associated pods.  This provides the source to image CI capabilities demonstrated previously
+ * Click Containers.  Notice the sti-build items and assocaited pods.  This provides the source to image CI capabilities demonstrated previously
  * Click Container Nodes.  This displays the OpenShift nodes in the environment.
  * Click Image Registries.  This is the local docker registry running on OpenShift and is where the JBoss EAP images reside
  * Click Container Images.  This is a list of all container images located in the registry
  * Click Topology.  This is a graphical representation of the environment.  You can hover over items for a brief description
-
+ 
 == Extra credit
 
-The JBoss EPA application provides order functionality in the web UI for products listed.  Create a test user and purchase several products.
+The JBoss EAP application provides order functionality in the web UI for products listed.  Create a test user and purchase several products.
 
   . Create a test user
-  * Navigate to the EAP web UI: `http://workstation-<GUID>.rhpds.opentlc.com/`
+  * Navigate to the EAP web UI: `http://<IP_ADDRESS_OF_WORKSTATION>`
   * In the upper right click "Register"
   * Fill in the Customer Registration form and click "Register"
-
+  
   . Purchase products
   * As the test user select several products from the web UI to purchase
   * Once you have selected the desired items click the cart/checkout icon in the upper right
