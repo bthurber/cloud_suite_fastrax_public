@@ -114,9 +114,62 @@ The envrionment is configured with persistent storage that maps a Cinder volume 
 
 .  On the OpenShift all-in-one instance (openshift-master.example.com) review the persistent volume and claim
 * From the cli: 
+. SSH to access your demo server with your OPENTLC login name and private SSH key.
+
+* Example using a Unix/Linux system:
++
 ----
-oc get pv and oc get pvc
+$ ssh -i /path/to/private_key <YOUR-OPENTLC-USERNAME>@demo-<YOUR-GUID>.rhpds.opentlc.com
 ----
+
+. Become `root` using your OPENTLC password:
++
+----
+$ sudo -i
+----
+
+. Establish an SSH connection to the OpenStack Controller:
++
+----
+# ssh ctrl
+----
+
+. Connect to the OpenShift master:
++
+----
+# ssh -i openstack.pem cloud-user@192.168.1.250
+----
+
+. sudo to root:
++
+----
+# su -
+----
+
+. Login to OpenShift as the admin user:
++
+----
+# oc login
+----
+
+. Change projects to jboss:
++
+----
+# oc project jboss
+----
+
+. Review the persistent volume:
++
+----
+oc get pv 
+----
+
+. Review the persistent volume claim:
++
+----
+oc get pvc
+----
+
 * From the console under the Jboss project, navigate to Browse, Pods.  Locate and click on the sales-db pod.  Review the volumes attached.
 
 == Updates
