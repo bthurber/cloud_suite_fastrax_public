@@ -299,7 +299,7 @@ You can ignore the warnings from the VMs with disabled providers.
 
 == Migrate a VM From Red Hat Enterprise Virtualization to OpenStack Platform
 
-. Clear the POA tag from VMware.
+. Clear the POD tag from VMware.
 
 .. On the `cf` system, go to *Infrastructure* -> *Providers*.
 
