@@ -120,7 +120,10 @@ You can also find these URLs in the email provided when you provisioned the demo
 * *CloudForms:* https://cf-GUID.rhpds.opentlc.com
 
 * *OpenStack Dashboard:* https://osp-GUID.rhpds.opentlc.com/dashboard
-
++
+[NOTE]
+If accessing the Satellite console, you may see the Satellite server status of "error" and the hosts "out-of'sync".  This is normal and can be ignored
++
 === Validate the Current VMs
 
 . On the `cf` system, go to *Infrastructure* -> *Providers*.
