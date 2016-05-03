@@ -68,7 +68,7 @@ see: https://www.opentlc.com/lifecycle
 
 == Getting Started
 
-OpenStack Horizon: `https://osp-<GUID>.rhpds.opentlc.com/dashboard` 
+OpenStack Horizon: `https://ctrl-<GUID>.rhpds.opentlc.com/dashboard` 
 
 .  Login into the OpenStack dahsboard and start both OpenShift instances:
 
