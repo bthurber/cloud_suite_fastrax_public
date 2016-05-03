@@ -37,8 +37,7 @@ The demo environment consists of the following systems:
 
 1.  Log in to https://rhpds.redhat.com with your OPENTLC SSO credentials.
 2.  Go to *Services* → *Catalogs* → *Service Catalogs*.
-3.  Under *All Services* → *Cloud Infrastructure Demos*, select *Red Hat
-Cloud Suite Reporting Demo*.
+3.  Under *All Services* → *Red Hat Cloud Suite Demos*, select *Scalable Infrastructure Demo*.
 4.  On the right, click *Order*.
 5.  Read all of the information on the resulting page, check the
 necessary box, and then click *Submit*.
