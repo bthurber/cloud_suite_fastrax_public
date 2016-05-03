@@ -49,7 +49,7 @@ The demo environment consists of the following systems:
 
 . Go to *Services* -> *Catalogs* -> *Service Catalogs*.
 
-. Under *All Services* -> *Cloud Infrastructure Demos*, select *Red Hat Cloud Suite Migration Demo*.
+. Under *All Services* -> *Red Hat Cloud Suite Demos*, select *Optimize I.T. Demo*.
 
 . On the right, click *Order*.
 
