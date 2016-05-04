@@ -113,8 +113,7 @@ Consists of JBoss EAP 6 running a series of microservices to include (based on t
 The envrionment is configured with persistent storage that maps a Cinder volume in OpenStack to a persistent volume in OpenShift.  A persistent claim is then mapped to the volume and provides storage to the sales-db pod.
 
 .  On the OpenShift all-in-one instance (openshift-master.example.com) review the persistent volume and claim
-* From the cli: 
-. SSH to access your demo server with your OPENTLC login name and private SSH key.
+.  SSH to access your demo server with your OPENTLC login name and private SSH key.
 
 * Example using a Unix/Linux system:
 +
