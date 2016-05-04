@@ -279,7 +279,7 @@ status:
 
 ----
 
-.. Change the `uri` reference to match the name of your GitHub repository, which is based in part on your GitHub username: `https://github.com/GitHubUsername/RHsyseng/OpenShift3-MSA`.
+.. Change the `uri` reference to match the name of your GitHub repository, which is based in part on your GitHub username: `https://github.com/<GitHubUsername>/OpenShift3-MSA`.
 +
 [IMPORTANT]
 Replace `GitHubUsername` with your actual GitHub username. For example, if your GitHub username is `jeandeaux`, the name of your GitHub repository is `'https://github.com/jeandeaux/OpenShift3-MSA`.
