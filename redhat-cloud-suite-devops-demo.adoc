@@ -78,7 +78,7 @@ OpenStack Horizon: `https://ctrl-<GUID>.rhpds.opentlc.com/dashboard`
 * Next to each instance click "Start Instance"
 * Click on Volumes and review the Cinder volume used for persistent storage <datagrid>
 
-CloudForms Appliance: `https://cloudforms-<GUID>.rhpds.opentlc.com`
+CloudForms Appliance: `https://cf-<GUID>.rhpds.opentlc.com`
 
 .  Login to the CloudForms appliance:
 
