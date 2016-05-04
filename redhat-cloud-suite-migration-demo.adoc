@@ -22,6 +22,46 @@ This demonstration uses Red Hat CloudForms 3.2 as a broker to drive virtual-to-v
 ** `haproxy` - a Red Hat Enterprise Linux 7 host running the HAProxy tool configured to proxy traffic to `wp1` and `wp2`
 ** `mysql`- a Red Hat Enterprise Linux 7 host running MariaDB that the `wp1` and `wp2` hosts talk to
 
+=== System Requirements
+
+* Firefox 17 or higher
++
+[NOTE]
+Chrome and Internet Explorer are not recommended.
+
+* Adobe Flash 15 or higher must be enabled in Firefox (for vCenter)
+* SSH client
+* SSH key pair
+
+=== Provision Your Demo Environment
+
+. Upload your public SSH key to https://www.opentlc.com/update, if you have not done so already.
++
+[NOTE]
+If you need help with SSH, go to https://www.opentlc.com/ssh.html.
+
+. Log in to https://rhpds.redhat.com with your OPENTLC SSO credentials.
+
+. Go to *Services* -> *Catalogs* -> *Service Catalogs*.
+
+. Under *All Services* -> *Red Hat Cloud Suite Demos*, select *Modernize Development and Operations*.
+
+. On the right, click *Order*.
+
+. Read all of the information on the resulting page, check the necessary box, and click *Submit*.
+
+[IMPORTANT]
+====
+* It takes about 30 minutes for your demo to load completely and become accessible, even if some of the systems are marked "Up."
+* You will receive an email with information about how to access your demo environment.
+** The email contains a list of hostnames, IP addresses, and your GUID; make note of them.
+** Whenever you see GUID in the demo instructions, replace it with the GUID provided in the email.
+* You can get real-time updates of your demo environment at https://www.opentlc.com/rhpds-status.
+====
+
+[TIP]
+Be very mindful of the runtime of your demo environment!  It may take you several hours to complete the demo, so you may have to extend the runtime.  This is especially important in later steps when you are building virtual machines.  For information on how to extend runtime and lifetime, see https://www.opentlc.com/lifecycle.
+
 === Environment
 
 The demo environment consists of the following systems:
