@@ -208,6 +208,8 @@ following values:
 1.  Click the *Preview* tab, then click *Load* to preview the report.
 2.  Click *Add* to create the new report.
 
+. Do this for each OpenStack environment
+
 === Create Ad-hoc Report
 
 1.  Navigate to *Cloud Intelligence -> Reports*.
