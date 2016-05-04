@@ -388,7 +388,7 @@ CloudForms provides the first glimpses of what unified management of containers,
  . Access the CloudForms appliance 
  * Open a browser and navigate to the CloudForms appliance.  The URL will be located in the e-mail received after ordering the catalog item in the RHPDS system `https://<CFME_EXTERNAL_HOSTNAME>` admin/r3dh4t1!
  * Navigate to Containers > Providers and click the OSE provider listed
- * Click Configuratio > Refresh items and relationships
+ * Click Configuration > Refresh items and relationships
 
 After a few minutes the Container Provider will refresh the environment info
 
