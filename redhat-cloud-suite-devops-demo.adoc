@@ -286,11 +286,14 @@ Replace `GitHubUsername` with your actual GitHub username. For example, if your 
 
 .. Save and exit `vi` by typing *:wq*.
 +
-NOTE: There are other ways to achieve this outcome, this way is used to cover
- the `oc edit` and the `oc start-build` commands.
-
 
 . Run `oc get buildconfig presentation -o yaml` again. Notice that `uri` has been updated.
+
+. Start the rebuild of the presentation pod:
++
+----
+[root@openshift-all-in-one ~]# oc start-build presentation
+----
 
 . Run `oc get builds` to check if the new build has started:
 +
@@ -298,16 +301,9 @@ NOTE: There are other ways to achieve this outcome, this way is used to cover
 [root@openshift-all-in-one ~]# oc get builds
 ----
 +
-If the build has not started yet, you can start it yourself and then follow `build-log`:
+Follow `build-log`:
 +
 ----
-[root@openshift-all-in-one ~]# oc get bc
-NAME               TYPE      SOURCE
-presentation   Docker    https://github.com/YOURUSERNAME/OpenShift3-MSA
-
-[root@openshift-all-in-one ~]# oc start-build presentation
-presentation-5
-
 [root@openshift-all-in-one ~]# oc get builds -w
 NAME             TYPE      FROM      STATUS    STARTED                  DURATION
 presentation-5   Source    Git       Running   Less than a second ago   
