@@ -137,7 +137,7 @@ $ sudo -i
 . Connect to the OpenShift master:
 +
 ----
-# ssh -i openstack.pem cloud-user@192.168.1.250
+# ssh -i openshift.pem cloud-user@192.168.1.250
 ----
 
 . sudo to root:
