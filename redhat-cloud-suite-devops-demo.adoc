@@ -37,7 +37,7 @@ The demo environment consists of the following systems:
 
 == Provision Your Demo Environment
 
-1.  Log in to https://rhpds.redhat.com with your OPENTLC SSO credentials.
+1.  Log in to https://rhpds.redhat.com with your OPENTLC SSO credentials.
 2.  Go to *Services* → *Catalogs* → *Service Catalogs*.
 3.  Under *All Services* → *Red Hat Cloud Suite Demos*, select *Modernize Development and Operations Demo*.
 4.  On the right, click *Order*.
