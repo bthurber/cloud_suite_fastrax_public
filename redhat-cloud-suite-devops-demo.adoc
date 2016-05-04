@@ -114,12 +114,12 @@ The envrionment is configured with persistent storage that maps a Cinder volume 
 
 .  On the OpenShift all-in-one instance (openshift-master.example.com) review the persistent volume and claim
 * From the cli: 
-. SSH to access your demo server with your OPENTLC login name and private SSH key.
+. SSH to access your bastion host with your OPENTLC login name and private SSH key.
 
 * Example using a Unix/Linux system:
 +
 ----
-$ ssh -i /path/to/private_key <YOUR-OPENTLC-USERNAME>@demo-<YOUR-GUID>.rhpds.opentlc.com
+$ ssh -i /path/to/private_key <YOUR-OPENTLC-USERNAME>@workstation-<YOUR-GUID>.rhpds.opentlc.com
 ----
 
 . Become `root` using your OPENTLC password:
